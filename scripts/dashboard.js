@@ -2,188 +2,191 @@ $( document ).ready(function() {
 
 
 
-	// // Entrance Anims 
-	// $('#login-container').addClass('entrance-anim ');
+    // // Entrance Anims
+    // $('#login-container').addClass('entrance-anim ');
 
-	// var scrollVal = 0;
+    // var scrollVal = 0;
 
-	// $( window ).on('resize', function(){
-	// 	screenWidth = $(window).width();
-	//     if (screenWidth > 1018) {
-		
-	// 	} 
-		
-	// });
+    // $( window ).on('resize', function(){
+    // 	screenWidth = $(window).width();
+    //     if (screenWidth > 1018) {
 
-	var sampleMessages = [
-		{
-	        id: 0,
-	        author: 'Matty Ice',
-	        timestamp:'11:38am',
-	        body:"Hi bb gurl. @Lisa",
-	    },
-	    {
-	        id: 1,
-	        author: 'Lisa',
-	        timestamp:'11:41am',
-	        body:"Matt I told you not to talk dirty to me in this chat. Save it for the DM's when they are finally implemented.",
-	    },
-	    {
-	        id: 2,
-	        author: 'Matty Ice',
-	        timestamp:'11:44am',
-	        body:"Ohh srry bb. I nvr meant to hurt u 💖",
-	    },
-	    {
-	        id: 3,
-	        author: 'Andys Woody',
-	        timestamp:'11:46am',
-	        body:"Lisa, would you like to model for a new Rustangelo painting I'm working on?",
-	    },
-	    {
-	        id: 4,
-	        author: 'Lisa',
-	        timestamp:'11:51am',
-	        body:"Absolutely! want me to come over to your place? xD",
-	    },
-	];
+    // 	}
 
-	$(document).scroll(function() {
+    // });
 
-		scrollVal = $(document).scrollTop();
+    var sampleMessages = [
+        {
+            id: 0,
+            author: 'Matty Ice',
+            timestamp:'11:38am',
+            body:"Hi bb gurl. @Lisa",
+        },
+        {
+            id: 1,
+            author: 'Lisa',
+            timestamp:'11:41am',
+            body:"Matt I told you not to talk dirty to me in this chat. Save it for the DM's when they are finally implemented.",
+        },
+        {
+            id: 2,
+            author: 'Matty Ice',
+            timestamp:'11:44am',
+            body:"Ohh srry bb. I nvr meant to hurt u 💖",
+        },
+        {
+            id: 3,
+            author: 'Andys Woody',
+            timestamp:'11:46am',
+            body:"Lisa, would you like to model for a new Rustangelo painting I'm working on?",
+        },
+        {
+            id: 4,
+            author: 'Lisa',
+            timestamp:'11:51am',
+            body:"Absolutely! want me to come over to your place? xD",
+        },
+    ];
 
-	    //console.log("SCROLL: "+scrollVal);
+    $(document).scroll(function() {
+
+        scrollVal = $(document).scrollTop();
+
+        //console.log("SCROLL: "+scrollVal);
 
 
-	});
+    });
 
-	function formatDate12Hour(date) {
-	  let hours = date.getHours();
-	  let minutes = date.getMinutes();
-	  let ampm = hours >= 12 ? 'pm' : 'am';
-	  hours = hours % 12;
-	  hours = hours ? hours : 12; // the hour '0' should be '12'
-	  minutes = minutes < 10 ? '0'+minutes : minutes;
-	  let strTime = hours + ':' + minutes + ' ' + ampm;
-	  return strTime;
-	}
+    function formatDate12Hour(date) {
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        let strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+    }
 
-	var chat_feed = $('#chat-module--container .chat-message--list');
-	var debug_feed = $('#debug-module--container .debug-message--list');
+    var chat_feed = $('#chat-module--container .chat-message--list');
+    var debug_feed = $('#debug-module--container .debug-message--list');
 
-	function appendNewMessage(msg, fromMe){
+    function appendNewMessage(msg, fromMe){
 
-		let isMe = "";
-		if (fromMe) {
-			isMe = "is-me";
-		}
-		let msg_text = msg.body;
-		let msg_author = msg.author;
-		let msg_timestamp = formatDate12Hour(new Date($.now()));
-		let msg_template = '<li>'+
-				'				<div class="msg-username '+ isMe +'">'+ msg_author +' <span class="msg-timestamp">'+ msg_timestamp +'</span></div>'+
-				'				<div class="msg-text">'+ msg_text +'</div>'+
-				'			</li>';
+        let isMe = "";
+        if (fromMe) {
+            isMe = "is-me";
+        }
+        let msg_text = msg.body;
+        let msg_author = msg.author;
+        let msg_timestamp = formatDate12Hour(new Date($.now()));
+        let msg_template = '<li>'+
+            '				<div class="msg-username '+ isMe +'">'+ msg_author +' <span class="msg-timestamp">'+ msg_timestamp +'</span></div>'+
+            '				<div class="msg-text">'+ msg_text +'</div>'+
+            '			</li>';
 
-		chat_feed.append(msg_template);
-		chat_feed.animate({scrollTop: chat_feed.prop("scrollHeight")}, $('#chat-module--container .chat-message--list').height());
+        chat_feed.append(msg_template);
+        chat_feed.animate({scrollTop: chat_feed.prop("scrollHeight")}, $('#chat-module--container .chat-message--list').height());
 
-	}
+    }
 
-	function appendNewServerMessage(msg){
-
-		var formatted_msg = JSON.stringify(msg, null, 2); // spacing level = 2
-		
-		let msg_template = '<li>'+			
-				'				<div class="msg-text">'+ formatted_msg +'</div>'+
-				'			</li>';
-
+    function appendNewServerMessage(msg){
+        let msg_timestamp = formatDate12Hour(new Date($.now()));
+        let msg_template = '<li>'+
+            ' <span class="msg-timestamp">'+ msg_timestamp +'</span></div>' +
+            '				<div class="msg-text">'+ msg +'</div>'+
+            '			</li>';
 		debug_feed.append(msg_template);
-		debug_feed.animate({scrollTop: chat_feed.prop("scrollHeight")}, $('#chat-module--container .chat-message--list').height());
 
-	}
+        //debug_feed.append(msg_template);
+        debug_feed.animate({scrollTop: chat_feed.prop("scrollHeight")}, $('#chat-module--container .chat-message--list').height());
 
-	
+    }
+
+
 
     var i=0;
 
-	setInterval(function() {
+    setInterval(function() {
 
-		if (i == sampleMessages.length) {
-			i = 0;
-			chat_feed.empty();
-		}
+        if (i == sampleMessages.length) {
+            i = 0;
+            chat_feed.empty();
+        }
 
-	    appendNewMessage(sampleMessages[i], false);
+        appendNewMessage(sampleMessages[i], false);
 
-	    i++;
+        i++;
 
-	}, 5500);
+    }, 5500);
 
-	$('.chat-title-bar button').click(function() {
-    
+    $('.chat-title-bar button').click(function() {
+
         $('#chat-module--container').toggleClass('closed');
         $('#chat-text-input').focus();
     });
 
     $('.debug-title-bar button').click(function() {
-    
+
         $('#debug-module--container').toggleClass('closed');
         //$('#debug-text-input').focus();
     });
 
     $('#top-bar--container .account-settings-btn').click(function() {
-    
+
         $('#top-bar--container .account-settings-menu--container').toggleClass('open');
-        
+
     });
 
     $('#account-settings-menu-close-btn').click(function() {
-    
+
         $('#top-bar--container .account-settings-menu--container').toggleClass('open');
-        
+
     });
 
     $('.debug-btn').click(function() {
-    
+
         $('#debug-module--container').toggleClass('visible');
-        
+
     });
 
-    
+
 
 
 
     $(document).keypress(function(e) {
-    	if($('#chat-module--container textarea').val()) {
-		    if(e.which == 13) {
-		    	let timestamp = formatDate12Hour(new Date($.now()));
-		    	let message_body = $('#chat-module--container textarea').val();
-		    	let temp_msg = {
-			        id: 0,
-			        author: 'Sebio',
-			        timestamp: timestamp,
-			        body: message_body,
-			    };
-		        appendNewMessage(temp_msg, true);
-		        $('#chat-module--container textarea').val().replace(/\n/g, "");
-		        $('#chat-module--container textarea').val('');
-		        return false;
+        if($('#chat-module--container textarea').val()) {
+            if(e.which == 13) {
+                let timestamp = formatDate12Hour(new Date($.now()));
+                let message_body = $('#chat-module--container textarea').val();
+                let temp_msg = {
+                    id: 0,
+                    author: 'Sebio',
+                    timestamp: timestamp,
+                    body: message_body,
+                };
+                appendNewMessage(temp_msg, true);
+                $('#chat-module--container textarea').val().replace(/\n/g, "");
+                $('#chat-module--container textarea').val('');
+                return false;
 
-		    }
-		}
-	});
+            }
+        }
+    });
 
 
-	/*  WEBSOCKETS */
+    /*  WEBSOCKETS */
 
-	var wsUri = "ws://localhost:8080/ws";
+    var wsUri = "ws://"+window.location.host +"/ws";
     var output;
     var webSocket;
 
     function init()
     {
+        console.log("init websocket");
         output = debug_feed;
+        $('#debug-module--container').toggleClass('visible');
+        $('#debug-module--container').toggleClass('closed');
         testWebSocket();
     }
 
@@ -227,7 +230,10 @@ $( document ).ready(function() {
 
     function onMessage(evt)
     {
-        appendNewServerMessage(evt.data);
+        var obj
+        obj = JSON.parse(evt.data)
+        msg = JSON.stringify(obj, null, 2)
+        appendNewServerMessage(msg);
 
     }
 
@@ -248,12 +254,12 @@ $( document ).ready(function() {
         webSocket.send(message);
     }
 
-   
 
 
+    init()
 
-    window.addEventListener("load", init, false);
+    //window.addEventListener("load", init, false);
 
-	
+
 
 });
